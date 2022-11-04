@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\SessionController;
+use App\Models\Person;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +48,34 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/softdelete', function() {
+  $result = Person::find(1)->delete();
+  if($result){
+    return "論理削除されました";
+  }
+});
+
+Route::get('softdelete/get', function () {
+  $person = Person::onlyTrashed()->get();
+  return $person;
+});
+
+Route::get('softdelete/store', function() {
+  $result = Person::onlyTrashed()->restore();
+  return $result;
+});
+
+Route::get('softdelete/absolute', function () {
+  $result = Person::onlyTrashed()->forceDelete();
+  return $result;
+});
+
+Route::get('uuid', function() {
+  $products = Product::all();
+  foreach($products as $product){
+    echo $product.'<br>';
+  }
+});
 
 require __DIR__.'/auth.php';
