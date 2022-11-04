@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\SessionController;
 use App\Models\Person;
 use App\Models\Product;
+use App\Http\Controllers\SchoolController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,5 +78,8 @@ Route::get('uuid', function() {
     echo $product.'<br>';
   }
 });
+
+Route::get('fill', [SchoolController::class, 'fillSchool']);
+Route::get('create', [SchoolController::class, 'createSchool']);
 
 require __DIR__.'/auth.php';
